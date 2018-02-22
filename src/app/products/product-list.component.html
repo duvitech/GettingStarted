@@ -1,6 +1,6 @@
 <div class="panel panel-primary">
     <div class="panel-heading">
-        Product List
+       {{productTitle}}
     </div>
     <div class="panel-body">
         <div class="row">
@@ -15,11 +15,11 @@
             </div>
         </div>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" *ngIf='products && products.length'>
                 <thead>
                     <tr>
                         <th>
-                            <button class="btn btn-primary">
+                            <button class="btn btn-primary" (click)='toggleImage()'>
                                 Show Image
                             </button>
                         </th>
@@ -31,7 +31,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    <tr *ngFor = 'let product of products'>
+                        <td><img *ngIf='showImage'
+                             [src]='product.imageUrl'
+                            [title]='product.productName'
+                            [style.width.px]='imageWidth'
+                            [style.margin.px]='imageMargin'>
+                        </td>
+                        <td>{{product.productName}}</td>
+                        <td>{{product.productCode}}</td>
+                        <td>{{product.releaseDate}}</td>
+                        <td>{{product.price}}</td>
+                        <td>{{product.starRating}}</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
