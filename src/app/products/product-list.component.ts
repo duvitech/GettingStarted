@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from './product';
+import { ProductService } from './product.service';
 
 @Component({
     selector: 'pm-products',
@@ -12,6 +13,7 @@ export class ProductListComponent implements OnInit {
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = false;
+    
     _listFilter: string;
     get listFilter(): string {
       return this._listFilter;
@@ -22,32 +24,9 @@ export class ProductListComponent implements OnInit {
     }
 
     filteredProducts: IProduct[];
-    products: IProduct[] = [
-        {
-            'productId': 2,
-            'productName': 'Garden Cart',
-            'productCode': 'GDN-0023',
-            'releaseDate': 'March 18, 2017',
-            'description': '15 gallon capacity',
-            'price': 32.99,
-            'starRating': 4.2,
-            'imageUrl': 'https://openclipart.org/download/241265/schubkarre.svg'
-        },
-        {
-            'productId': 3,
-            'productName': 'Hammer',
-            'productCode': 'TRX-0015',
-            'releaseDate': 'June 18, 2012',
-            'description': 'Standard Hammer',
-            'price': 9.99,
-            'starRating': 3.2,
-            'imageUrl': 'https://openclipart.org/image/2400px/svg_to_png/14360/mystica-Hammer-Silhouette.png'
-        }
-    ];
+    products: IProduct[] = [];
 
-    constructor() {
-      this.filteredProducts = this.products;
-      this.listFilter = 'cart';
+    constructor(private _productService: ProductService) {
     }
 
     onRatingClicked(message: string): void {
@@ -56,10 +35,12 @@ export class ProductListComponent implements OnInit {
 
     ngOnInit(): void {
       console.log('In OnInit');
+      this.products = this._productService.getProducts();
     }
 
     toggleImage(): void {
         this.showImage = !this.showImage;
+        this.filteredProducts = this.products;
     }
 
     performFilter(filterBy: string): IProduct[] {
